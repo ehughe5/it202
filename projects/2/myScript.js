@@ -1,5 +1,7 @@
 
 $(function () {
+     smoothScroll.init();
+     
      $.ajax({
           url: "https://data.cityofchicago.org/resource/7as2-ds3y.json?$group=community_area&$order=community_area%20asc&$where=status=%22open%22&$select=community_area,%20count(*)",
           type: "GET",
@@ -7,24 +9,23 @@ $(function () {
           success: function(data){
                AppendDataToTable(data);
                AppendDataToPieChart(data);
-               AppendDataToHeat(data);
           }
      });
      
      //===========================================
      function AppendDataToTable(data){
+          $("#table").prepend("<h2>The Table</h2>");
           for(var i = 0; i < data.length; i++){
                var area = data[i].community_area;
                var count = data[i].count;
                var row = "<tr><th>" + area + "</th><th>" + count + "</th></tr>";
                $("#myTable").append(row);
           }
-          console.log("end of Append To Table");
+          //console.log("end of Append To Table");
      };
      
      //===========================================
      function AppendDataToPieChart(ajaxData){
-          
           google.charts.load('current', {'packages':['corechart']});
           google.charts.setOnLoadCallback(function(){
                var myArray=[
@@ -47,13 +48,15 @@ $(function () {
                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
           
                chart.draw(data, options);
+               
+               $("#piechart").prepend("<h2>The Pie Chart</h2>");
           });
           
-          console.log("end of Append To Pie Chart");
+          //console.log("end of Append To Pie Chart");
      };
      
      //===========================================
-     function AppendDataToHeat(data){
-          
-     };
+
+     
+
 });
